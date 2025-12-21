@@ -65,6 +65,14 @@ The application will start on `http://localhost:8080`
 
 Open `http://localhost:8080` in your browser to access the minimal test UI.
 
+## API Documentation (Swagger)
+
+The API is documented using OpenAPI/Swagger. Access the documentation at:
+
+- **Swagger UI**: `http://localhost:8080/swagger-ui.html`
+- **OpenAPI JSON**: `http://localhost:8080/api-docs`
+- **OpenAPI YAML**: `http://localhost:8080/api-docs.yaml`
+
 ## API Endpoints
 
 All API endpoints use Protocol Buffer serialization (`application/octet-stream`).

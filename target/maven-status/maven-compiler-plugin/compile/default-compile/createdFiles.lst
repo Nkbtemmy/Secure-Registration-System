@@ -13,6 +13,7 @@ com/nkubito/domain/entity/User.class
 com/nkubito/Application.class
 com/nkubito/proto/Messages$CreateUserRequest.class
 com/nkubito/proto/Messages$CreateUserResponse$1.class
+com/nkubito/config/OpenApiConfig.class
 com/nkubito/proto/Messages$CreateUserResponseOrBuilder.class
 com/nkubito/proto/Messages$PublicKeyResponse.class
 com/nkubito/exception/ResourceNotFoundException.class

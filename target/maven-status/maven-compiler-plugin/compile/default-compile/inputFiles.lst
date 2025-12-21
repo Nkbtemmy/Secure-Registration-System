@@ -9,6 +9,7 @@
 /Users/macbook/Desktop/user-managment/src/main/java/com/nkubito/crypto/SigningService.java
 /Users/macbook/Desktop/user-managment/src/main/java/com/nkubito/crypto/PasswordHasher.java
 /Users/macbook/Desktop/user-managment/src/main/java/com/nkubito/repository/UserRepository.java
+/Users/macbook/Desktop/user-managment/src/main/java/com/nkubito/config/OpenApiConfig.java
 /Users/macbook/Desktop/user-managment/src/main/java/com/nkubito/service/impl/UserServiceImpl.java
 /Users/macbook/Desktop/user-managment/src/main/java/com/nkubito/exception/BusinessException.java
 /Users/macbook/Desktop/user-managment/target/generated-sources/protobuf/java/com/nkubito/proto/Messages.java
