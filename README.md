@@ -152,4 +152,4 @@ Uses H2 in-memory database. Access the console at:
 2. The registration code checksum uses lowercase hex for consistency
 3. Email addresses are normalized to lowercase
 4. Auth tokens are URL-safe Base64 encoded
-# Secure-Registration-System
+
