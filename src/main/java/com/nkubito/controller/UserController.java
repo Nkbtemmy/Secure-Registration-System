@@ -187,6 +187,7 @@ public class UserController {
         return ResponseEntity
                 .ok()
                 .contentType(PROTOBUF_MEDIA_TYPE)
+                .header("Content-Disposition", "attachment; filename=\"dilithium-public-key.bin\"")
                 .body(signedResponse.toByteArray());
     }
 

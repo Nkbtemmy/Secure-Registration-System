@@ -384,30 +384,25 @@
             }
         });
 
-        // Get Public Key
+        // Get Public Key (download as file)
         document.getElementById('getPublicKeyBtn').addEventListener('click', async () => {
             document.getElementById('keyLoading').style.display = 'block';
             document.getElementById('keyResult').style.display = 'none';
-            
+
             try {
                 const response = await fetch('/api/public-key');
-                const responseBuffer = await response.arrayBuffer();
-                
-                const SignedResponse = root.lookupType('SignedResponse');
-                const signedResponse = SignedResponse.decode(new Uint8Array(responseBuffer));
-                
-                const PublicKeyResponse = root.lookupType('PublicKeyResponse');
-                const keyData = PublicKeyResponse.decode(signedResponse.body);
-                
-                serverPublicKey = keyData.publicKey;
-                const publicKeyHex = arrayBufferToHex(keyData.publicKey);
-                
-                showResult('keyResult', true,
-                    `Algorithm: ${keyData.algorithm}\n` +
-                    `Public Key (hex, first 100 chars):\n${publicKeyHex.substring(0, 100)}...\n\n` +
-                    `Full key length: ${publicKeyHex.length} hex chars (${keyData.publicKey.length} bytes)`,
-                    false
-                );
+                const blob = await response.blob();
+
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'dilithium-public-key.bin';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showResult('keyResult', true, 'Public key file downloaded as dilithium-public-key.bin');
             } catch (error) {
                 showResult('keyResult', false, error.message);
             } finally {

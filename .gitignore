@@ -69,3 +69,4 @@ logs/
 *.zip
 *.tar.gz
 *.rar
+.claude
