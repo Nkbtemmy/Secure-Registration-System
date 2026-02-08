@@ -1,0 +1,41 @@
+---
+title: User Creation Flow - How an Admin Creates a New User
+---
+flowchart TD
+    Start(["Admin sends a request<br/>with user's name & email"])
+
+    Validate{"Are name and<br/>email provided?"}
+    CheckDuplicate{"Does a user with<br/>this email already exist?"}
+
+    GenCode["Generate a unique<br/>registration code<br/>(20-character secure code)"]
+    GenSalt["Generate a random salt<br/>(extra security ingredient)"]
+    HashCode["Hash the registration code<br/>with salt for safe storage"]
+
+    SaveUser["Save to database:<br/>- Name & email<br/>- Hashed code + salt<br/>- Status: Not Registered"]
+
+    BuildResponse["Build response with:<br/>- Name, email<br/>- Registration code (plain text)"]
+    SignResponse["Digitally sign the response<br/>with Dilithium signature"]
+    ReturnSuccess(["Return signed response<br/>to Admin (Status 201)"])
+
+    ErrorMissing(["Error: Name and email<br/>are required (Status 400)"])
+    ErrorExists(["Error: User with this<br/>email already exists (Status 409)"])
+
+    Start --> Validate
+    Validate -- "No" --> ErrorMissing
+    Validate -- "Yes" --> CheckDuplicate
+    CheckDuplicate -- "Yes, duplicate" --> ErrorExists
+    CheckDuplicate -- "No, new user" --> GenCode
+    GenCode --> GenSalt
+    GenSalt --> HashCode
+    HashCode --> SaveUser
+    SaveUser --> BuildResponse
+    BuildResponse --> SignResponse
+    SignResponse --> ReturnSuccess
+
+    style Start fill:#4A90D9,color:#fff
+    style ReturnSuccess fill:#50C878,color:#fff
+    style ErrorMissing fill:#FF6B6B,color:#fff
+    style ErrorExists fill:#FF6B6B,color:#fff
+    style GenCode fill:#FFA500,color:#fff
+    style HashCode fill:#7B68EE,color:#fff
+    style SignResponse fill:#20B2AA,color:#fff

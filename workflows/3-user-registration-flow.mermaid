@@ -1,0 +1,69 @@
+---
+title: User Registration Flow - How a User Completes Registration
+---
+flowchart TD
+    Start(["User sends email<br/>& registration code"])
+
+    Validate{"Are email and<br/>code provided?"}
+
+    Step1["STEP 1: Integrity Check<br/>(No database access yet)"]
+    CheckFormat{"Is the code format valid?<br/>(20 hex characters with<br/>correct checksum)"}
+
+    Step2["STEP 2: Find the User"]
+    FindUser{"Does a user exist<br/>with this email?"}
+
+    CheckRegistered{"Is the user<br/>already registered?"}
+
+    Step3["STEP 3: Verify Code"]
+    VerifyHash{"Does the code match<br/>the stored hash?"}
+
+    Step4["STEP 4: Complete Registration"]
+    GenToken["Generate a secure<br/>authentication token"]
+    MarkRegistered["Update user status:<br/>- Registered = Yes<br/>- Save auth token<br/>- Record timestamp"]
+
+    BuildResponse["Build response with:<br/>- Auth token<br/>- Name & email"]
+    SignResponse["Digitally sign the response"]
+    ReturnSuccess(["Return signed response<br/>with auth token (Status 200)"])
+
+    ErrorMissing(["Error: Email and code<br/>are required (Status 400)"])
+    ErrorFormat(["Error: Invalid code<br/>format or checksum (Status 400)"])
+    ErrorNotFound(["Error: No user found<br/>with this email (Status 404)"])
+    ErrorAlready(["Error: User is already<br/>registered (Status 409)"])
+    ErrorWrong(["Error: Wrong<br/>registration code (Status 400)"])
+
+    Start --> Validate
+    Validate -- "No" --> ErrorMissing
+    Validate -- "Yes" --> Step1
+
+    Step1 --> CheckFormat
+    CheckFormat -- "Invalid" --> ErrorFormat
+    CheckFormat -- "Valid" --> Step2
+
+    Step2 --> FindUser
+    FindUser -- "Not found" --> ErrorNotFound
+    FindUser -- "Found" --> CheckRegistered
+    CheckRegistered -- "Already registered" --> ErrorAlready
+    CheckRegistered -- "Not yet" --> Step3
+
+    Step3 --> VerifyHash
+    VerifyHash -- "Doesn't match" --> ErrorWrong
+    VerifyHash -- "Matches" --> Step4
+
+    Step4 --> GenToken
+    GenToken --> MarkRegistered
+    MarkRegistered --> BuildResponse
+    BuildResponse --> SignResponse
+    SignResponse --> ReturnSuccess
+
+    style Start fill:#4A90D9,color:#fff
+    style ReturnSuccess fill:#50C878,color:#fff
+    style Step1 fill:#FFA500,color:#fff
+    style Step2 fill:#FFA500,color:#fff
+    style Step3 fill:#FFA500,color:#fff
+    style Step4 fill:#FFA500,color:#fff
+    style ErrorMissing fill:#FF6B6B,color:#fff
+    style ErrorFormat fill:#FF6B6B,color:#fff
+    style ErrorNotFound fill:#FF6B6B,color:#fff
+    style ErrorAlready fill:#FF6B6B,color:#fff
+    style ErrorWrong fill:#FF6B6B,color:#fff
+    style SignResponse fill:#20B2AA,color:#fff

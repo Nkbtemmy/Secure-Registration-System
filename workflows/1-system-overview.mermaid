@@ -1,0 +1,38 @@
+---
+title: System Overview - How the Secure Registration System Works
+---
+graph TB
+    Admin["👤 Admin<br/>(Creates user accounts)"]
+    User["👤 New User<br/>(Registers with a code)"]
+    Anyone["👤 Anyone<br/>(Can request public key)"]
+
+    API["🖥️ Secure Registration Server<br/>(Spring Boot Application)"]
+
+    subgraph Security Layer
+        Protobuf["📦 Protocol Buffers<br/>(Compact data packaging)"]
+        Dilithium["🔐 Dilithium Signatures<br/>(Quantum-safe digital seal)"]
+        Hashing["🔒 Password Hashing<br/>(PBKDF2 - secure storage)"]
+    end
+
+    DB[("🗄️ Database<br/>(Stores user records)")]
+
+    Admin -- "1. Sends name & email" --> API
+    API -- "2. Returns registration code" --> Admin
+    Admin -- "3. Shares code with user" --> User
+    User -- "4. Sends email & code" --> API
+    API -- "5. Returns auth token" --> User
+    Anyone -- "Request public key" --> API
+
+    API --- Protobuf
+    API --- Dilithium
+    API --- Hashing
+    API --- DB
+
+    style Admin fill:#4A90D9,color:#fff
+    style User fill:#7B68EE,color:#fff
+    style Anyone fill:#20B2AA,color:#fff
+    style API fill:#FF6B6B,color:#fff
+    style DB fill:#FFA500,color:#fff
+    style Protobuf fill:#50C878,color:#fff
+    style Dilithium fill:#50C878,color:#fff
+    style Hashing fill:#50C878,color:#fff

@@ -1,0 +1,46 @@
+---
+title: Registration Code Lifecycle - From Creation to Verification
+---
+flowchart LR
+    subgraph Generation ["1. Code Generation"]
+        Random["Generate 8 random bytes"]
+        Hex["Convert to 16 hex characters<br/>(e.g. a3f7b2c1e9d045f8)"]
+        MD5["Calculate MD5 checksum<br/>of the 16 characters"]
+        Last2["Take last 2 bytes<br/>of the MD5 hash"]
+        Combine["Combine into 20-character code<br/>a3f7b2c1e9d045f8 + ab12"]
+    end
+
+    subgraph Storage ["2. Secure Storage"]
+        Salt["Generate random salt"]
+        PBKDF2["Hash first 16 characters<br/>using PBKDF2<br/>(65,536 iterations)"]
+        Save["Store in database:<br/>- Hash of code<br/>- Salt<br/>(Never store the plain code)"]
+    end
+
+    subgraph Delivery ["3. Delivery"]
+        AdminGets["Admin receives<br/>full 20-character code"]
+        SharesCode["Admin shares code<br/>with the new user"]
+    end
+
+    subgraph Verification ["4. Verification (Registration)"]
+        IntegrityCheck["Check code format:<br/>- Is it 20 hex characters?<br/>- Does checksum match?<br/>(No database needed)"]
+        ReHash["Hash the first 16 characters<br/>with stored salt"]
+        Compare["Compare new hash<br/>with stored hash"]
+        Match{"Match?"}
+        Success["Registration approved"]
+        Fail["Registration denied"]
+    end
+
+    Random --> Hex --> MD5 --> Last2 --> Combine
+    Combine --> Salt --> PBKDF2 --> Save
+    Combine --> AdminGets --> SharesCode
+    SharesCode --> IntegrityCheck --> ReHash --> Compare --> Match
+    Match -- "Yes" --> Success
+    Match -- "No" --> Fail
+
+    style Random fill:#4A90D9,color:#fff
+    style Combine fill:#4A90D9,color:#fff
+    style PBKDF2 fill:#7B68EE,color:#fff
+    style Save fill:#FFA500,color:#fff
+    style IntegrityCheck fill:#20B2AA,color:#fff
+    style Success fill:#50C878,color:#fff
+    style Fail fill:#FF6B6B,color:#fff

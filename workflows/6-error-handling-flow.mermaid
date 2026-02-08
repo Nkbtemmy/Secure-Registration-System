@@ -1,0 +1,52 @@
+---
+title: Error Handling Flow - What Happens When Something Goes Wrong
+---
+flowchart TD
+    Request(["Any API request comes in"])
+    Process["Server processes the request"]
+
+    Error{"Does an<br/>error occur?"}
+
+    NoError["Build normal response"]
+
+    subgraph Error Types
+        E400["Bad Request (400)<br/>Missing name, email,<br/>or invalid input"]
+        E400Code["Invalid Code (400)<br/>Wrong format, bad checksum,<br/>or incorrect code"]
+        E404["Not Found (404)<br/>No user exists<br/>with that email"]
+        E409A["Already Exists (409)<br/>Email is already<br/>taken by another user"]
+        E409B["Already Registered (409)<br/>User has already<br/>completed registration"]
+        E500["Server Error (500)<br/>Something unexpected<br/>went wrong"]
+    end
+
+    BuildError["Build error response with:<br/>- Error type<br/>- Helpful message<br/>- Status code"]
+
+    SignNormal["Digitally sign the response"]
+    SignError["Digitally sign the error<br/>(even errors are signed!)"]
+
+    ReturnOK(["Return signed<br/>success response"])
+    ReturnError(["Return signed<br/>error response"])
+
+    Request --> Process --> Error
+    Error -- "No" --> NoError --> SignNormal --> ReturnOK
+    Error -- "Yes" --> Error_Types
+
+    E400 --> BuildError
+    E400Code --> BuildError
+    E404 --> BuildError
+    E409A --> BuildError
+    E409B --> BuildError
+    E500 --> BuildError
+
+    BuildError --> SignError --> ReturnError
+
+    style Request fill:#4A90D9,color:#fff
+    style ReturnOK fill:#50C878,color:#fff
+    style ReturnError fill:#FF6B6B,color:#fff
+    style E400 fill:#FF8C42,color:#fff
+    style E400Code fill:#FF8C42,color:#fff
+    style E404 fill:#FF8C42,color:#fff
+    style E409A fill:#FF8C42,color:#fff
+    style E409B fill:#FF8C42,color:#fff
+    style E500 fill:#FF8C42,color:#fff
+    style SignNormal fill:#20B2AA,color:#fff
+    style SignError fill:#20B2AA,color:#fff

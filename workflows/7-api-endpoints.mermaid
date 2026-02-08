@@ -1,0 +1,37 @@
+---
+title: API Endpoints - Available Operations
+---
+flowchart LR
+    subgraph Endpoints ["🖥️ Secure Registration API"]
+        direction TB
+
+        subgraph EP1 ["POST /api/users"]
+            EP1Desc["Who: Admin<br/>Purpose: Create a new user account<br/>Input: Name + Email<br/>Output: Registration code"]
+        end
+
+        subgraph EP2 ["POST /api/register"]
+            EP2Desc["Who: New User<br/>Purpose: Complete registration<br/>Input: Email + Registration code<br/>Output: Authentication token"]
+        end
+
+        subgraph EP3 ["GET /api/public-key"]
+            EP3Desc["Who: Anyone<br/>Purpose: Get the server's public key<br/>Input: Nothing<br/>Output: Dilithium public key"]
+        end
+    end
+
+    Admin["👤 Admin"] --> EP1Desc
+    User["👤 User"] --> EP2Desc
+    Anyone["👤 Anyone"] --> EP3Desc
+
+    EP1Desc --> Signed1["📦 Signed Response"]
+    EP2Desc --> Signed2["📦 Signed Response"]
+    EP3Desc --> Signed3["📦 Signed Response"]
+
+    style Admin fill:#4A90D9,color:#fff
+    style User fill:#7B68EE,color:#fff
+    style Anyone fill:#20B2AA,color:#fff
+    style Signed1 fill:#50C878,color:#fff
+    style Signed2 fill:#50C878,color:#fff
+    style Signed3 fill:#50C878,color:#fff
+    style EP1 fill:#fff3e0,color:#333
+    style EP2 fill:#e8f5e9,color:#333
+    style EP3 fill:#e3f2fd,color:#333

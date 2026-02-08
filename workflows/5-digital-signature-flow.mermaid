@@ -1,0 +1,31 @@
+---
+title: Digital Signature Flow - How Every Response is Secured
+---
+sequenceDiagram
+    participant Client as 👤 Client
+    participant Server as 🖥️ Server
+    participant Dilithium as 🔐 Dilithium Key Manager
+    participant Signer as ✍️ Signing Service
+
+    Note over Server,Dilithium: At server startup
+    Server->>Dilithium: Generate key pair
+    Dilithium-->>Server: Private key + Public key ready
+
+    Note over Client,Signer: For every API response
+    Client->>Server: Send request (e.g. create user)
+    Server->>Server: Process the request
+    Server->>Server: Build response data (Protocol Buffer)
+
+    Server->>Signer: Sign this response
+    Signer->>Signer: Serialize response to bytes
+    Signer->>Dilithium: Sign these bytes with private key
+    Dilithium-->>Signer: Digital signature
+    Signer-->>Server: Signed response (data + signature)
+
+    Server-->>Client: Return signed response
+
+    Note over Client,Signer: Client can verify authenticity
+    Client->>Server: GET /api/public-key
+    Server-->>Client: Server's public key
+    Client->>Client: Use public key to verify<br/>that the signature matches the data
+    Client->>Client: If valid = data is authentic<br/>and has not been tampered with
