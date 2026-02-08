@@ -1,0 +1,71 @@
+# === Maven === #
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# === Java === #
+*.class
+*.jar
+*.war
+*.ear
+*.log
+hs_err_pid*
+replay_pid*
+
+# === Spring Boot === #
+application-*.properties
+!application.properties
+spring-shell.log
+
+# === IntelliJ IDEA === #
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# === Eclipse === #
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+bin/
+
+# === VS Code === #
+.vscode/
+
+# === NetBeans === #
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# === OS Files === #
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === Protobuf Generated === #
+src/main/java/com/nkubito/proto/
+
+# === Environment / Secrets === #
+*.env
+*.pem
+*.key
+*.p12
+*.jks
+
+# === Logs === #
+logs/
+*.log
+
+# === Package Files === #
+*.zip
+*.tar.gz
+*.rar
